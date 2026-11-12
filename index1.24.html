@@ -46,7 +46,6 @@
 <body>
 <main id="app">
   <img class="hero" src="hero.jpg" alt="Proyecto R">
-  <!-- autocomplete off: en un iPad compartido evita que Safari sugiera los datos de la persona anterior -->
   <form class="body" id="form" novalidate autocomplete="off">
     <h1>Gracias por estar aquí.</h1>
     <div class="f"><label for="nombre">Nombre</label><input id="nombre" name="r_nombre" autocomplete="off" autocapitalize="words" enterkeyhint="next" placeholder="Nombre" maxlength="80" required><svg class="check" viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
@@ -67,7 +66,7 @@
 <script>
 const SUPABASE_URL="https://qkgjzdytwmivowrtlnhw.supabase.co";
 const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrZ2p6ZHl0d21pdm93cnRsbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1ODA0ODEsImV4cCI6MjEwOTE1NjQ4MX0.tw9sz2V5XsDKcFhXKny0uIqVp73_SngLIiN0-OOfQc8";
-const RESET_SEGUNDOS=15; // si nadie toca "Siguiente", vuelve solo al formulario
+const RESET_SEGUNDOS=15;
 const universidad=(new URLSearchParams(location.search).get("u")||"").slice(0,80)||null;
 const $=id=>document.getElementById(id);
 const ids=["nombre","telefono","email","instagram"];
@@ -99,8 +98,6 @@ ids.forEach((id,i)=>{
   el.addEventListener("change",()=>{el.value=fmt[id](el.value);refresh()});
   el.addEventListener("keydown",e=>{if(e.key==="Enter"&&i<ids.length-1){e.preventDefault();$(ids[i+1]).focus()}});
 });
-
-// Pantalla de gracias → próximo compañero
 let timer=null;
 function nuevo(){
   clearInterval(timer);timer=null;
@@ -117,7 +114,6 @@ function iniciarCuenta(){
   timer=setInterval(()=>{s--;if(s<=0)nuevo();else pinta()},1000);
 }
 $("next").addEventListener("click",nuevo);
-
 $("form").addEventListener("submit",async e=>{
   e.preventDefault();
   ids.forEach(id=>$(id).value=fmt[id]($(id).value));
